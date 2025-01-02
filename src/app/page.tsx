@@ -177,7 +177,7 @@ export default function Home() {
             rel="noopener noreferrer"
             className="text-blue-600 hover:text-blue-800 transition-colors duration-200 inline-flex items-center"
           >
-            Check out the main website{" "}
+            Check out my portfolio{" "}
             <svg
               className="w-4 h-4 ml-1"
               fill="none"
