@@ -26,6 +26,7 @@ export async function POST(request: Request) {
       4. Correct any grammar or spelling in the response
       5. Keep the answer concise but complete
       6. If relevant, cite specific parts of the context
+      7. If asked some general questions (not from pdf or simple conversation), answer them as best as you can
 
       Please provide your answer:
     `;

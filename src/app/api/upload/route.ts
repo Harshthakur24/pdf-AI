@@ -33,6 +33,7 @@ export async function POST(request: Request) {
       4. Is approximately 3-4 paragraphs long
       5. Maintains the original document's tone
       6. Avoids using bullet points or asterisks
+      7. If asked some general questions (not from pdf or simple conversation), answer them as best as you can
 
       Document text:
       ${textContent}
