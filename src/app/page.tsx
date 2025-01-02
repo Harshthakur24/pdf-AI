@@ -149,7 +149,7 @@ export default function Home() {
                       Your answers will appear here
                     </p>
                     <p className="text-xs text-gray-400 dark:text-gray-600">
-                      Upload a Pdf and ask a question to get started
+                      Upload a PDF and ask a question to get started
                     </p>
                   </div>
                 )}
