@@ -27,33 +27,36 @@ export function PlaceholdersAndVanishInput({
     onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }) {
     const [currentPlaceholder, setCurrentPlaceholder] = useState(0);
-
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
-    const startAnimation = () => {
-        intervalRef.current = setInterval(() => {
-            setCurrentPlaceholder((prev) => (prev + 1) % placeholders.length);
-        }, 3000);
-    };
-    const handleVisibilityChange = () => {
-        if (document.visibilityState !== "visible" && intervalRef.current) {
-            clearInterval(intervalRef.current); // Clear the interval when the tab is not visible
-            intervalRef.current = null;
-        } else if (document.visibilityState === "visible") {
-            startAnimation(); // Restart the interval when the tab becomes visible
-        }
-    };
 
+    // Initial placeholder setup - client-side only
     useEffect(() => {
-        startAnimation();
-        document.addEventListener("visibilitychange", handleVisibilityChange);
+        setCurrentPlaceholder(0);
+    }, []);
 
-        return () => {
-            if (intervalRef.current) {
+    // Visibility and animation handling
+    useEffect(() => {
+        const handleVisibilityChangeLocal = () => {
+            if (document.hidden && intervalRef.current) {
                 clearInterval(intervalRef.current);
             }
-            document.removeEventListener("visibilitychange", handleVisibilityChange);
         };
-    }, [placeholders]);
+
+        const startAnimationLocal = () => {
+            setCurrentPlaceholder((prevIndex) => (prevIndex + 1) % placeholders.length);
+        };
+
+        // Only set up listeners on client
+        if (typeof window !== 'undefined') {
+            document.addEventListener('visibilitychange', handleVisibilityChangeLocal);
+            const interval = setInterval(startAnimationLocal, 3000);
+
+            return () => {
+                document.removeEventListener('visibilitychange', handleVisibilityChangeLocal);
+                clearInterval(interval);
+            };
+        }
+    }, [placeholders.length]);
 
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const newDataRef = useRef<AnimatedPixel[]>([]);

@@ -1,28 +1,7 @@
+import { NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { PDFLoader } from '@langchain/community/document_loaders/fs/pdf';
-
-// Create a singleton to store PDF content
-export class DocumentStore {
-  private static instance: DocumentStore;
-  private content: string = '';
-
-  private constructor() {}
-
-  static getInstance() {
-    if (!DocumentStore.instance) {
-      DocumentStore.instance = new DocumentStore();
-    }
-    return DocumentStore.instance;
-  }
-
-  setContent(content: string) {
-    this.content = content;
-  }
-
-  getContent() {
-    return this.content;
-  }
-}
+import { DocumentStore } from '@/app/lib/documentStore';
 
 export async function POST(request: Request) {
   try {
@@ -30,7 +9,7 @@ export async function POST(request: Request) {
     const file: File | null = data.get('file') as unknown as File;
 
     if (!file) {
-      return Response.json({ error: 'No file received' }, { status: 400 });
+      return NextResponse.json({ error: 'No file received' }, { status: 400 });
     }
 
     // Convert the file to text
@@ -53,9 +32,9 @@ export async function POST(request: Request) {
     const response = await result.response;
     const summary = response.text();
 
-    return Response.json({ summary });
+    return NextResponse.json({ summary });
   } catch (error) {
     console.error('Error processing PDF:', error);
-    return Response.json({ error: 'Failed to process PDF' }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to process PDF' }, { status: 500 });
   }
 } 

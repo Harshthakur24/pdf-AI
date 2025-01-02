@@ -1,5 +1,5 @@
 // Global store for PDF content
-export const pdfStore = {
+const pdfStore = {
   content: '',
   setContent(text: string) {
     this.content = text;
@@ -7,4 +7,6 @@ export const pdfStore = {
   getContent() {
     return this.content;
   }
-}; 
+};
+
+export { pdfStore }; 
