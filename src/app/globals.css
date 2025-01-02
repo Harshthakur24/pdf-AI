@@ -13,12 +13,6 @@
     --foreground: #ededed;
   }
 }
-@media (prefers-color-scheme: light) {
-  html, body {
-    background: #000000 !important;
-    color: #ffffff !important;
-  }
-}
 
 body {
   color: var(--foreground);
