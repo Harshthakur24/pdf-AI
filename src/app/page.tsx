@@ -59,7 +59,6 @@ export default function Home() {
         throw new Error('Please enter a question');
       }
 
-      console.log('Sending question:', question); // Debug log
 
       const response = await fetch('/api/question', {
         method: 'POST',
