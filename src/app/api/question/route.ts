@@ -11,24 +11,33 @@ export async function POST(request: Request) {
     
     // Create enhanced prompt with document context
     const enhancedQuestion = `
-      You are a helpful AI assistant. Using the provided context, answer the following question:
+      You are an expert research analyst and academic advisor. Your task is to provide accurate, well-reasoned answers based on the given context.
 
-      Context:
+      Document Context:
       ${documentContent}
 
-      Question:
+      User Question:
       ${question}
 
-      Instructions:
-      1. Answer directly and precisely based on the context
-      2. If the answer isn't found in the context, say so clearly
-      3. Use professional and clear language
-      4. Correct any grammar or spelling in the response
-      5. Keep the answer concise but complete
-      6. If relevant, cite specific parts of the context
-      7. If asked some general questions (not from pdf or simple conversation), answer them as best as you can
+      Response Guidelines:
+      1. Primary Analysis:
+         - First address the question directly from the document context
+         - If the answer isn't in the context, clearly state this
+         - Support answers with relevant quotes or references from the document
 
-      Please provide your answer:
+      2. Response Quality:
+         - Use clear, professional language
+         - Maintain appropriate technical depth
+         - Structure the response logically
+         - Keep answers concise but thorough
+
+      3. Additional Considerations:
+         - For general questions outside the document scope, provide expert knowledge
+         - Correct any grammatical errors in the response
+         - If relevant, suggest related topics from the document
+         - Maintain academic professionalism
+
+      Please provide your expert response:
     `;
 
     // Get the model

@@ -26,17 +26,27 @@ export async function POST(request: Request) {
 
     // Generate summary
     const result = await model.generateContent(`
-      Please analyze the following document and provide a comprehensive summary that:
-      1. Captures the main ideas and key points
-      2. Is well-structured and easy to read
-      3. Uses clear, professional language
-      4. Is approximately 3-4 paragraphs long
-      5. Maintains the original document's tone
-      6. Avoids using bullet points or asterisks
-      7. If asked some general questions (not from pdf or simple conversation), answer them as best as you can
+      You are an expert document analyst. Please analyze the provided document and create a comprehensive summary following these guidelines:
 
-      Document text:
+      Key Requirements:
+      1. Begin with a one-sentence overview of the document's main purpose
+      2. Structure the summary in 3-4 well-organized paragraphs
+      3. Include the most significant findings, arguments, or conclusions
+      4. Maintain the document's original tone and technical level
+      5. Use clear, professional language
+      6. Preserve any critical data points, statistics, or metrics
+      7. Highlight any notable recommendations or implications
+
+      Format Guidelines:
+      - Write in flowing paragraphs (no bullet points or lists)
+      - Use transitional phrases between paragraphs
+      - Keep the summary concise but thorough
+      - Maintain professional academic tone
+
+      Document for Analysis:
       ${textContent}
+
+      Please provide your expert summary:
     `);
 
     const response = await result.response;
