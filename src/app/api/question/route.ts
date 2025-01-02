@@ -11,11 +11,23 @@ export async function POST(request: Request) {
     
     // Create enhanced prompt with document context
     const enhancedQuestion = `
-      Context: ${documentContent}
-      
-      Question: ${question}
-      
-      Please provide a well-written answer based on the context above and recorrect the sentence and grammar if needed.
+      You are a helpful AI assistant. Using the provided context, answer the following question:
+
+      Context:
+      ${documentContent}
+
+      Question:
+      ${question}
+
+      Instructions:
+      1. Answer directly and precisely based on the context
+      2. If the answer isn't found in the context, say so clearly
+      3. Use professional and clear language
+      4. Correct any grammar or spelling in the response
+      5. Keep the answer concise but complete
+      6. If relevant, cite specific parts of the context
+
+      Please provide your answer:
     `;
 
     // Get the model

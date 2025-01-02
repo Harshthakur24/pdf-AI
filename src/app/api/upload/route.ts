@@ -26,9 +26,18 @@ export async function POST(request: Request) {
 
     // Generate summary
     const result = await model.generateContent(`
-      Please provide a concise and well written summary of the following document:
+      Please analyze the following document and provide a comprehensive summary that:
+      1. Captures the main ideas and key points
+      2. Is well-structured and easy to read
+      3. Uses clear, professional language
+      4. Is approximately 3-4 paragraphs long
+      5. Maintains the original document's tone
+      6. Avoids using bullet points or asterisks
+
+      Document text:
       ${textContent}
     `);
+
     const response = await result.response;
     const summary = response.text();
 
