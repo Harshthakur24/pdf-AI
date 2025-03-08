@@ -12,7 +12,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'No file received' }, { status: 400 });
     }
 
-    // Convert the file to text
     const pdfLoader = new PDFLoader(file);
     const pages = await pdfLoader.load();
     const textContent = pages.map(page => page.pageContent).join('\n');
