@@ -2,7 +2,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { DocumentStore } from '@/app/lib/documentStore';
 
 // Initialize Gemini AI
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY!);
+const genAI = new GoogleGenerativeAI("AIzaSyDNbaE_VnpcuCSrVAnTn7vc1YaNCdO5Wkc");
 
 export async function POST(request: Request) {
   try {

@@ -20,7 +20,7 @@ export async function POST(request: Request) {
     DocumentStore.getInstance().setContent(textContent);
 
     // Get the model
-    const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY!);
+    const genAI = new GoogleGenerativeAI("AIzaSyDNbaE_VnpcuCSrVAnTn7vc1YaNCdO5Wkc");
     const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
     // Generate summary
