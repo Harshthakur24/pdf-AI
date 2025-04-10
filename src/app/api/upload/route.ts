@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import { PDFLoader } from '@langchain/community/document_loaders/fs/pdf';
 import { DocumentStore } from '@/app/lib/documentStore';
 
@@ -19,37 +18,48 @@ export async function POST(request: Request) {
     // Store the content
     DocumentStore.getInstance().setContent(textContent);
 
-    // Get the model
-    const genAI = new GoogleGenerativeAI("AIzaSyDNbaE_VnpcuCSrVAnTn7vc1YaNCdO5Wkc");
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    // Generate summary using Gemini API
+    const response = await fetch(
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyBb4WRbjbnycgufljXgT8oZw3lXo4m9rHc",
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          contents: [{
+            parts: [{ 
+              text: `
+                You are an expert document analyst. Please analyze the provided document and create a comprehensive summary following these guidelines:
 
-    // Generate summary
-    const result = await model.generateContent(`
-      You are an expert document analyst. Please analyze the provided document and create a comprehensive summary following these guidelines:
+                Key Requirements:
+                1. Begin with a one-sentence overview of the document's main purpose
+                2. Structure the summary in 3-4 well-organized paragraphs
+                3. Include the most significant findings, arguments, or conclusions
+                4. Maintain the document's original tone and technical level
+                5. Use clear, professional language
+                6. Preserve any critical data points, statistics, or metrics
+                7. Highlight any notable recommendations or implications
 
-      Key Requirements:
-      1. Begin with a one-sentence overview of the document's main purpose
-      2. Structure the summary in 3-4 well-organized paragraphs
-      3. Include the most significant findings, arguments, or conclusions
-      4. Maintain the document's original tone and technical level
-      5. Use clear, professional language
-      6. Preserve any critical data points, statistics, or metrics
-      7. Highlight any notable recommendations or implications
+                Format Guidelines:
+                - Write in flowing paragraphs (no bullet points or lists)
+                - Use transitional phrases between paragraphs
+                - Keep the summary concise but thorough
+                - Maintain professional academic tone
 
-      Format Guidelines:
-      - Write in flowing paragraphs (no bullet points or lists)
-      - Use transitional phrases between paragraphs
-      - Keep the summary concise but thorough
-      - Maintain professional academic tone
+                Document for Analysis:
+                ${textContent}
 
-      Document for Analysis:
-      ${textContent}
+                Please provide your expert summary:
+              `
+            }]
+          }]
+        })
+      }
+    );
 
-      Please provide your expert summary:
-    `);
-
-    const response = await result.response;
-    const summary = response.text();
+    const result = await response.json();
+    const summary = result.candidates[0].content.parts[0].text;
 
     return NextResponse.json({ summary });
   } catch (error) {

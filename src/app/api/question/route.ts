@@ -1,8 +1,5 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { NextResponse } from 'next/server';
 import { DocumentStore } from '@/app/lib/documentStore';
-
-// Initialize Gemini AI
-const genAI = new GoogleGenerativeAI("AIzaSyDNbaE_VnpcuCSrVAnTn7vc1YaNCdO5Wkc");
 
 export async function POST(request: Request) {
   try {
@@ -40,18 +37,29 @@ export async function POST(request: Request) {
       Please provide your expert response:
     `;
 
-    // Get the model
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    // API request to Gemini
+    const response = await fetch(
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyBb4WRbjbnycgufljXgT8oZw3lXo4m9rHc",
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          contents: [{
+            parts: [{ text: enhancedQuestion }]
+          }]
+        })
+      }
+    );
 
-    // Generate content with context
-    const result = await model.generateContent(enhancedQuestion);
-    const response = await result.response;
-    const answer = response.text();
+    const result = await response.json();
+    const answer = result.candidates[0].content.parts[0].text;
 
-    return Response.json({ answer });
+    return NextResponse.json({ answer });
   } catch (error) {
     console.error('Error processing question:', error);
-    return Response.json(
+    return NextResponse.json(
       { error: 'Failed to process question' },
       { status: 500 }
     );
